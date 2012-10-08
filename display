@@ -1,0 +1,13 @@
+#!/bin/sh
+LOCKFILE=/tmp/display_lockfile
+GNUSER=`ps aux | grep gnome-session | grep -v grep | head -n1 | cut -f1 -d' '`
+if [ -z "$GNUSER" ]; then
+  echo no gnome-session found >&2
+  exit 1
+fi
+echo $GNUSER
+
+#sudo -u lenovo DISPLAY=:0 xrandr >> /home/lenovo/log
+touch $LOCKFILE
+#sleep 10
+rm $LOCKFILE
