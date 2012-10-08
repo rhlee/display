@@ -3,14 +3,6 @@
 LOCKFILE=/tmp/display_lockfile
 GNUSER=`ps aux | grep gnome-session | grep -v grep | head -n1 | cut -f1 -d' '`
 
-if [ "`whoami`" = "root" ]; then
-  $ROOT=1
-  echo running as root
-else
-  $ROOT=0
-  echo running as non-root
-fi
-
 if [ -z "$GNUSER" ]; then
   echo no gnome-session found >&2
   exit 1
@@ -21,7 +13,10 @@ if [ -f $LOCKFILE ]; then
   echo error: lockfile still exists >&2
   exit 1
 fi
-#sudo -u lenovo DISPLAY=:0 xrandr >> /home/lenovo/log
+
+VGA=`sudo -u $GNUSER DISPLAY=:0 xrandr | grep 'VGA1 connected' | wc -l`
+echo vga $VGA
+
 touch $LOCKFILE
 sleep 10
 rm $LOCKFILE
