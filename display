@@ -3,6 +3,14 @@
 LOCKFILE=/tmp/display_lockfile
 GNUSER=`ps aux | grep gnome-session | grep -v grep | head -n1 | cut -f1 -d' '`
 
+if [ "`whoami`" = "root" ]; then
+  $ROOT=1
+  echo running as root
+else
+  $ROOT=0
+  echo running as non-root
+fi
+
 if [ -z "$GNUSER" ]; then
   echo no gnome-session found >&2
   exit 1
