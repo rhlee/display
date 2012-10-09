@@ -17,6 +17,14 @@ fi
 VGA=`sudo -u $GNUSER DISPLAY=:0 xrandr | grep 'VGA1 connected' | wc -l`
 if [ "$VGA" = "1" ]; then
   echo VGA detected
+  PAL=`sudo -u $GNUSER DISPLAY=:0 xrandr | grep 'PAL' | wc -l`
+  if [ "$PAL" = "1" ]; then
+    echo PAL modeline found
+  else
+    echo PAL modeline not found, adding modeline
+    sudo -u $GNUSER DISPLAY=:0 xrandr --newmode PAL 21.5 1024 1104 1205 1376 576 582 585 625 -hsync -vsync interlace
+    sudo -u $GNUSER DISPLAY=:0 xrandr --addmode VGA1 PAL
+  fi
 else
   echo VGA not detected
 fi
