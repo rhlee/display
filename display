@@ -15,7 +15,11 @@ if [ -f $LOCKFILE ]; then
 fi
 
 VGA=`sudo -u $GNUSER DISPLAY=:0 xrandr | grep 'VGA1 connected' | wc -l`
-echo vga $VGA
+if [ "$VGA" = "1" ]; then
+  echo VGA detected
+else
+  echo VGA not detected
+fi
 
 touch $LOCKFILE
 sleep 10
